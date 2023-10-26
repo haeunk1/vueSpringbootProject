@@ -28,7 +28,6 @@ export default {
         })
         axios.get("/api/items").then(({data}) => { //res -> {data} 요소를 바로 꺼내옴
             state.items = data;
-            console.log(data)
         })
 
         return {state}
