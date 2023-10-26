@@ -10,6 +10,9 @@
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import store from "@/scripts/store";
+import axios from "axios";
+import {watch} from "vue";
+import {useRoute} from "vue-router/dist/vue-router";
 //import Home from "@/pages/Home.vue";
 
 export default {
@@ -20,10 +23,22 @@ export default {
         Header
     },
     setup(){
-        const id = sessionStorage.getItem("id")
-        if(id){
-            store.commit("setAccount",id)
+        const check = () =>{
+            axios.get("/api/account/check").then(({data})=>{
+                console.log(data)
+                store.commit("setAccount",data || 0)
+            })
         }
+        const route = useRoute()
+
+        watch(route,() => {
+            check()
+        })
+        // 기존 : sessionStorage를 이용하여 로그인 체크 -> 경로값이 바뀔 때마다 체크 api로 로그인 값이 있는지 체크
+        // const id = sessionStorage.getItem("id")
+        // if(id){
+        //     store.commit("setAccount",id)
+        // }
     }
 }
 </script>

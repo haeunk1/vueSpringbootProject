@@ -8,9 +8,6 @@
                         <h4 class="text-white">사이트맵</h4>
                         <ul class="list-unstyled">
                             <li>
-                                <router-link to="/" class="text-white">{{ $store.state.account.id }}</router-link>
-                            </li>
-                            <li>
                                 <router-link to="/" class="text-white">메인화면</router-link>
                             </li>
                             <li>
