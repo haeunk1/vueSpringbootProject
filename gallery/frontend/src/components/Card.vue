@@ -30,7 +30,6 @@ export default {
     },
     setup() {
         const addToCart = (itemId) => {
-            console.log(itemId)
             axios.post(`/api/cart/items/${itemId}`).then(() => {
                 console.log("success")
             })
