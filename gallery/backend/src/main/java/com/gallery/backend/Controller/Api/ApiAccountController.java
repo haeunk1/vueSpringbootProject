@@ -8,6 +8,7 @@ import com.gallery.backend.repository.ItemRepository;
 import com.gallery.backend.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,6 +57,16 @@ public class ApiAccountController {
         }
 
         return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @PostMapping("/api/account/logout")
+    public ResponseEntity logout(HttpServletResponse res) {
+        Cookie cookie = new Cookie("token", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        res.addCookie(cookie);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

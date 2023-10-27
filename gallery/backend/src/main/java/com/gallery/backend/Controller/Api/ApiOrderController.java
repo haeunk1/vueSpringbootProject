@@ -8,6 +8,7 @@ import com.gallery.backend.entity.Order;
 import com.gallery.backend.repository.CartRepository;
 import com.gallery.backend.repository.ItemRepository;
 import com.gallery.backend.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,11 @@ public class ApiOrderController {
 
     @Autowired
     OrderRepository orderRepository;
-    
+
+    @Autowired
+    CartRepository cartRepository;
+
+    @Transactional
     @PostMapping("/api/orders")
     public ResponseEntity pushOrder(
             @RequestBody OrderDto dto,
@@ -45,8 +50,8 @@ public class ApiOrderController {
         newOrder.setItems(dto.getItems());
 
         orderRepository.save(newOrder);
-                
 
+        cartRepository.deleteByMemberId(memberId);//장바구니 비우기
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -58,7 +63,9 @@ public class ApiOrderController {
         if(!jwtService.isValue(token)){ // AOP 고려
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
-        List<Order> orders = orderRepository.findAll();
+
+        int memberId = jwtService.getId((token));
+        List<Order> orders = orderRepository.findByMemberIdOrderByDesc(memberId);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
