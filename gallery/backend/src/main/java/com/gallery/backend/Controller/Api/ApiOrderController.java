@@ -65,7 +65,7 @@ public class ApiOrderController {
         }
 
         int memberId = jwtService.getId((token));
-        List<Order> orders = orderRepository.findByMemberIdOrderByDesc(memberId);
+        List<Order> orders = orderRepository.findByMemberIdOrderByItemsDesc(memberId);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
